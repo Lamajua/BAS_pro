@@ -4,7 +4,6 @@ from firebase_admin import credentials
 
 # Initialize Flask app
 app = Flask(__name__)
-# app.secret_key = 'your_secret_key'  # Change this to a secure key
 
 # Initialize Firebase
 cred = credentials.Certificate("C:/Users/lmaal/Downloads/basdb-20b5b-firebase-adminsdk-rg388-367ca2f721.json")
@@ -27,5 +26,3 @@ if __name__ == '__main__':
     app.run(debug=True)
 
     #razan
-
-

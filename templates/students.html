@@ -45,15 +45,13 @@
                 {% for student in students %}
                 <tr>
                     <td>{{ student.to_dict().name }}</td>
-                    <td>{{ student.to_dict().address }}</td>
-                    <td>{{ student.to_dict().bus_number }}</td>
-                    <td> {{ student.to_dict().parent_phone_number }}
-                        <!-- {% for parent in parents %}
+                    <td>{% for parent in parents %}
                             {% if parent.to_dict().phone_number == student.to_dict().parent_phone_number %}
-                                {{ parent.to_dict().phone_number }}
+                                {{ parent.to_dict().address }}
                             {% endif %}
-                        {% endfor %} -->
-                    </td>
+                        {% endfor %}</td>
+                    <td>{{ student.to_dict().bus_number }}</td>
+                    <td>{{ student.to_dict().parent_phone_number }}</td>
                     <td>
                         <button
                             onclick="openUpdateModalStudents('{{ student.to_dict().name }}', '{{ student.to_dict().address }}', '{{ student.to_dict().bus_number }}', '{{ student.id }}')">Edit</button>
