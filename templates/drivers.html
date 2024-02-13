@@ -1,0 +1,109 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>drivers Information</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/contentStyling.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/modal.css') }}">
+</head>
+
+<body>
+    <div id="menu-container">
+        <div id="menu-logo">
+            <img src="static/images/bas.png" alt="Logo" width="150">
+        </div>
+
+        <ul id="menu-items">
+            <li>Profile</li>
+            <li>
+                Users
+                <ul>
+                    <li><a href="{{ url_for('parents.parents') }}">Parents</a></li>
+                    <li><a href="{{ url_for('drivers.drivers') }}">Drivers</a></li>
+                </ul>
+            </li>
+            <li><a href="{{ url_for('students.students') }}">Students</a></li>
+            <li>Performance Dashboard</li>
+        </ul>
+    </div>
+
+    <div id="infoTable-container">
+        <h1>Drivers Information</h1>
+        <form action="/add_driver" method="post">
+            <label for="name">Name:</label>
+            <input type="text" id="name" name="name" required>
+
+            <label for="phone_number">Phone Number:</label>
+            <input type="text" id="phone_number" name="phone_number" pattern="[0-9]{10}"
+                placeholder="10-digit phone number" required>
+
+            <label for="licExpDt">Liscence Expire Date:</label>
+            <input type="date" id="licExpDt" name="licExpDt" required>
+
+            <label for="bus_number">Bus Number:</label>
+            <input type="text" id="bus_number" name="bus_number" required>
+
+            <button type="submit">Add driver</button>
+        </form>
+
+        <table>
+            <thead>
+                <tr>
+                    <th>Name</th>
+                    <th>Phone Number</th>
+                    <th>Liscence Expire Date</th>
+                    <th>Bus No.</th>
+                    <th>Actions</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for driver in drivers %}
+                <tr>
+                    <td>{{ driver.to_dict().name }}</td>
+                    <td>{{ driver.to_dict().phone_number }}</td>
+                    <td>{{ driver.to_dict().licExpDt }}</td>
+                    <td>{{ driver.to_dict().bus_number }}</td> 
+                    <td>
+                        <button
+                            onclick="openUpdateModalDrivers('{{ driver.to_dict().name }}', '{{ driver.to_dict().phone_number }}', '{{ driver.to_dict().licExpDt }}', '{{ driver.to_dict().bus_number }}', '{{ driver.id }}')">Edit</button>
+
+                        
+                        <div id="updateModal-{{ driver.id }}" class="modal">
+                            <div class="modal-content">
+                                <span class="close" onclick="closeUpdateModal('updateModal-{{ driver.id }}')">&times;</span>
+                                <form id="updateForm-{{ driver.id }}" action="/edit_driver/{{ driver.id }}" method="post">
+                                    <!-- Ensure that each input field has a name attribute -->
+                                    <label for="updateName">Name:</label>
+                                    <input type="text" id="updateName-{{ driver.id }}" name="name" value="{{ driver.to_dict().name }}" placeholder="Name">
+                                    
+                                    <label for="updatePhoneNumber">Phone Number:</label>
+                                    <input type="text" id="updatePhoneNumber-{{ driver.id }}" name="phone_number" value="{{ driver.to_dict().phone_number }}"
+                                        placeholder="Phone Number">
+
+                                    <label for="updatelicExpDt">Liscence Expire Date:</label>
+                                    <input type="date" id="updateLicExpDt-{{ driver.id }}" name="licExpDt" value="{{ driver.to_dict().licExpDt }}" placeholder="Liscence Expire Date">
+                                    
+                                    <label for="updateBusNo">Bus Number:</label>
+                                    <input type="text" id="updateBusNo-{{ driver.id }}" name="bus_number" value="{{ driver.to_dict().bus_number }}"
+                                        placeholder="Bus Number">
+                                    
+                                    <button type="submit">Update</button>
+                                </form>
+                            </div>
+                        </div>
+                        <form action="/delete_driver/{{ driver.id }}" method="post" style="display: inline;">
+                            <button onclick="return confirm('Are you sure?')"" type="submit">Delete</button>
+                        </form>
+                    </td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+
+    <script src="static/js/modal.js"></script>
+</body>
+
+</html>

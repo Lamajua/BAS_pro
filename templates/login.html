@@ -1,0 +1,116 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Login</title>
+
+    <style>
+        body {
+            display: flex;
+            justify-content: center;
+            height: 100vh;
+            margin: 0;
+        }
+
+
+        #leftContainer {
+            flex: 1;
+            padding: 20px;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+        }
+
+        #rightContainer {
+            flex: 1;
+            display: flex;
+            flex-direction: column; /* Change to column layout */
+            align-items: center;
+            justify-content: center;
+            background-color: #362CAF;
+            border-radius: 60px;
+            color: white;
+            padding: 20px; /* Adjust padding as needed */
+            margin: 15px;
+        }
+
+        h1 {
+            text-align: left;
+        }
+
+        #loginForm {
+            max-width: 300px;
+            width: 100%;
+            display: flex;
+            flex-direction: column;
+            align-items: flex-start;
+            justify-content: center;
+            margin: auto;
+        }
+
+        label {
+            display: block;
+            margin-bottom: 13px;
+            color:#362CAF;
+            font-weight: bold;
+        } 
+
+        input {
+            width: 300px;
+            height: 40px;
+            padding: 8px;
+            margin-bottom: 16px;
+            box-sizing: border-box;
+            border-radius: 20px;
+            border: 1px solid #ccc; /* Thin grey border */
+        }
+
+        button {
+            width: 40%;
+            height: 40px;
+            padding: 10px;
+            background-color: #F8A21E;
+            color: white;
+            border: none;
+            border-radius: 25px;
+            cursor: pointer;
+            margin-top: 8px; /* Added margin-top to create space between the input and the button */
+            align-self: center; 
+        }
+    </style>
+</head>
+
+<body>
+    <div id="leftContainer">
+        <form id="loginForm">
+            <h2>Login</h2>
+            <label for="email">Email:</label>
+            <input type="email" id="email" name="email">
+            <label for="password">Password:</label>
+            <input type="password" id="password" name="password"><br>
+            <!-- <input type="submit" value="Login"> -->
+            <button type="button" onclick="login()">Login</button>
+            <p id="error-message"></p>
+        </form>
+    </div>
+
+    <div id="rightContainer">
+        <!-- Logo and text name go here -->
+        <img src="static/images/bas.png" alt="Logo"
+            style="width: 200px; height: 100px; margin-bottom: 10px;">
+        <p style="font-size: xx-large;">B A S</p>
+    </div>
+
+    <!-- Load Firebase SDK -->
+    <script src="https://www.gstatic.com/firebasejs/7.24.0/firebase-app.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/7.24.0/firebase-auth.js"></script>
+    
+    <!-- Load Firebase configuration -->
+    <script src="/static/js/firebase-config.js"></script>
+    
+    <!-- Load other scripts after Firebase SDK -->
+    <script src="/static/js/login.js"></script>
+
+</body>
+</html>

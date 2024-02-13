@@ -1,0 +1,170 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Parents Information</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/contentStyling.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/modal.css') }}">
+    <style>
+        .alert {
+            padding: 20px;
+            background-color: #f44336;
+            color: white;
+        }
+
+        .closebtn {
+            margin-left: 15px;
+            color: white;
+            font-weight: bold;
+            float: right;
+            font-size: 22px;
+            line-height: 20px;
+            cursor: pointer;
+            transition: 0.3s;
+        }
+
+        .closebtn:hover {
+            color: black;
+        }
+    </style>
+</head>
+
+<body>
+    <div id="menu-container">
+        <div id="menu-logo">
+            <img src="static/images/bas.png" alt="Logo" width="150">
+        </div>
+
+        <ul id="menu-items">
+            <li>Profile</li>
+            <li>
+                Users
+                <ul>
+                    <li><a href="{{ url_for('parents.parents') }}">Parents</a></li>
+                    <li><a href="{{ url_for('drivers.drivers') }}">Drivers</a></li>
+                </ul>
+            </li>
+            <li><a href="{{ url_for('students.students') }}">Students</a></li>
+            <li>Performance Dashboard</li>
+        </ul>
+    </div>
+    <div id="infoTable-container">
+        <h1>Parents Information</h1>
+        <h3>Add Parent:</h3>
+        <form action="/add_parent" method="post">
+            <label for="name">Parent Name:</label>
+            <input type="text" id="name" name="name" required>
+
+            <label for="phone_number">Parent Phone Number:</label>
+            <input type="text" id="phone_number" name="phone_number" pattern="[0-9]{10}"
+                placeholder="10-digit phone number" required>
+
+            <label for="password">Parent Password:</label>
+            <input type="password" id="password" name="password" required>
+
+            <label for="student_name">Student Name:</label>
+            <input type="text" id="student_name" name="student_name" required>
+
+            <label for="student_address">Student Address:</label>
+            <input type="text" id="student_address" name="student_address" required>
+
+            <label for="bus_number">Bus Number:</label>
+            <input type="text" id="bus_number" name="bus_number" required>
+
+            {% if error %}
+                <div class="alert">
+                    <span class="closebtn" onclick="this.parentElement.style.display='none';">&times;</span>
+                    {{ error }}
+                </div>
+            {% endif %}
+
+            <button type="submit">Add Parent and Student</button>
+
+        </form>
+        <table>
+            <thead>
+                <tr>
+                    <th>Name</th>
+                    <th>Phone Number</th>
+                    <th>Children</th>
+                    <th>Activated</th>
+                    <th>Actions</th>
+                </tr>
+            <tbody>
+                {% for parent in parents %}
+                <tr>
+                    <td>{{ parent.to_dict().name }}</td>
+                    <td>{{ parent.to_dict().phone_number }}</td>
+                    <td>{% for student in students %}
+                        {% if student.to_dict().parent_phone_number == parent.to_dict().phone_number %}
+                        {{ student.to_dict().name }},
+                        {% endif %}
+                        {% endfor %}
+                    </td>
+                    <td>{{ "False" if parent.to_dict().deactivated else "True"}}</td>
+                    <td>
+                        <button
+                            onclick="openUpdateModalParents('{{ parent.to_dict().name }}', '{{ parent.to_dict().phone_number }}', '{{ parent.id }}')">Edit</button>
+
+                        <div id="updateModal-{{ parent.id }}" class="modal">
+                            <div class="modal-content">
+                                <span class="close"
+                                    onclick="closeUpdateModal('updateModal-{{ parent.id }}')">&times;</span>
+                                <form id="updateForm-{{ parent.id }}" action="/edit_parent/{{ parent.id }}"
+                                    method="post">
+                                    <!-- Ensure that each input field has a name attribute -->
+                                    <label for="updateName">Name:</label>
+                                    <input type="text" id="updateName-{{ parent.id }}" name="name"
+                                        value="{{ parent.to_dict().name }}" placeholder="Name">
+
+                                    <label for="updatePhoneNumber">Phone Number:</label>
+                                    <input type="text" id="updatePhoneNumber-{{ parent.id }}" name="phone_number"
+                                        value="{{ parent.to_dict().phone_number }}" placeholder="Phone Number">
+
+                                    <button type="submit">Update</button>
+                                </form>
+                            </div>
+                        </div>
+                        <form action="/delete_parent/{{ parent.id }}" method="post" style="display: inline;">
+                            <button onclick="return confirm('Are you sure?')" type=" submit">Delete</button>
+                        </form>
+                        <form action="/deactivate_parent/{{ parent.id }}" method="post" style="display: inline;">
+                            <button onclick="return confirm('Are you sure you want to deactivate this parent?')"
+                                type="submit">Deactivate</button>
+                        </form>
+                    </td>
+                </tr>
+                {% endfor %}
+            </tbody>
+            </thead>
+        </table>
+
+    </div>
+    <script src="static/js/modal.js"></script>
+    <script>
+        let childCount = 1;
+
+        function addChild() {
+            childCount++;
+            const childrenContainer = document.getElementById('children-container');
+            const childFields = `
+                <div id="child-${childCount}">
+                    <h4>Child ${childCount}</h4>
+                    <label for="child_name_${childCount}">Name:</label>
+                    <input type="text" id="child_name_${childCount}" name="child_name_${childCount}" required>
+
+                    <label for="child_address_${childCount}">Address:</label>
+                    <input type="text" id="child_address_${childCount}" name="child_address_${childCount}" required>
+
+                    <label for="child_bus_number_${childCount}">Bus Number:</label>
+                    <input type="text" id="child_bus_number_${childCount}" name="child_bus_number_${childCount}" required>
+                </div>
+            `;
+            childrenContainer.insertAdjacentHTML('beforeend', childFields);
+        }
+    </script>
+</body>
+
+</html>

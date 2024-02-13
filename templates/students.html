@@ -1,0 +1,98 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Students Information</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/contentStyling.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/modal.css') }}">
+</head>
+
+<body>
+    <div id="menu-container">
+        <div id="menu-logo">
+            <img src="static/images/bas.png" alt="Logo" width="150">
+        </div>
+
+        <ul id="menu-items">
+            <li>Profile</li>
+            <li>
+                Users
+                <ul>
+                    <li><a href="{{ url_for('parents.parents') }}">Parents</a></li>
+                    <li><a href="{{ url_for('drivers.drivers') }}">Drivers</a></li>
+                </ul>
+            </li>
+            <li><a href="{{ url_for('students.students') }}">Students</a></li>
+            <li>Performance Dashboard</li>
+        </ul>
+    </div>
+
+    <div id="infoTable-container">
+        <h1>Students Information</h1>
+        <table>
+            <thead>
+                <tr>
+                    <th>Name</th>
+                    <th>Address</th>
+                    <th>Bus No.</th>
+                    <th>Parent Phone Number</th>
+                    <th>Actions</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for student in students %}
+                <tr>
+                    <td>{{ student.to_dict().name }}</td>
+                    <td>{{ student.to_dict().address }}</td>
+                    <td>{{ student.to_dict().bus_number }}</td>
+                    <td> {{ student.to_dict().parent_phone_number }}
+                        <!-- {% for parent in parents %}
+                            {% if parent.to_dict().phone_number == student.to_dict().parent_phone_number %}
+                                {{ parent.to_dict().phone_number }}
+                            {% endif %}
+                        {% endfor %} -->
+                    </td>
+                    <td>
+                        <button
+                            onclick="openUpdateModalStudents('{{ student.to_dict().name }}', '{{ student.to_dict().address }}', '{{ student.to_dict().bus_number }}', '{{ student.id }}')">Edit</button>
+
+
+                        <div id="updateModal-{{ student.id }}" class="modal">
+                            <div class="modal-content">
+                                <span class="close"
+                                    onclick="closeUpdateModal('updateModal-{{ student.id }}')">&times;</span>
+                                <form id="updateForm-{{ student.id }}" action="/edit_student/{{ student.id }}"
+                                    method="post">
+                                    <!-- Ensure that each input field has a name attribute -->
+                                    <label for="updateName">Name:</label>
+                                    <input type="text" id="updateName-{{ student.id }}" name="name"
+                                        value="{{ student.to_dict().name }}" placeholder="Name">
+
+                                    <label for="updateAddress">Address:</label>
+                                    <input type="text" id="updateAddress-{{ student.id }}" name="address"
+                                        value="{{ student.to_dict().address }}" placeholder="Address">
+
+                                    <label for="updateBusNo">Bus Number:</label>
+                                    <input type="text" id="updateBusNo-{{ student.id }}" name="bus_number"
+                                        value="{{ student.to_dict().bus_number }}" placeholder="Bus Number">
+
+                                    <button type="submit">Update</button>
+                                </form>
+                            </div>
+                        </div>
+                        <form action="/delete_student/{{ student.id }}" method="post" style="display: inline;">
+                            <button onclick="return confirm('Are you sure?')" type="submit">Delete</button>
+                        </form>
+                    </td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+
+    <script src="static/js/modal.js"></script>
+</body>
+
+</html>
