@@ -5,13 +5,13 @@ function login() {
     const errorMessage = document.getElementById('error-message');
 
     firebase.auth().signInWithEmailAndPassword(email, password)
+        // Successful logIn
         .then((userCredential) => {
-            // Redirect or handle successful login
             console.log("User logged in:", userCredential.user);
-            window.location.replace("/students");  // Redirect to a dashboard page
+            window.location.replace("/students");  // Redirect to the students page
         })
+        // Handling error
         .catch((error) => {
-            // Handle errors
             errorMessage.innerHTML = error.message;
         });
 }

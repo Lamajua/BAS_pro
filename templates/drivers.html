@@ -74,7 +74,6 @@
                             <div class="modal-content">
                                 <span class="close" onclick="closeUpdateModal('updateModal-{{ driver.id }}')">&times;</span>
                                 <form id="updateForm-{{ driver.id }}" action="/edit_driver/{{ driver.id }}" method="post">
-                                    <!-- Ensure that each input field has a name attribute -->
                                     <label for="updateName">Name:</label>
                                     <input type="text" id="updateName-{{ driver.id }}" name="name" value="{{ driver.to_dict().name }}" placeholder="Name">
                                     

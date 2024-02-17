@@ -31,16 +31,16 @@ def add_parent():
             'parent_phone_number': phone_number 
         })
 
-
+    # Check if the parent already exist by checking the phone number
     existing_parent = db.collection('parents').where('phone_number', '==', phone_number).get()
     if existing_parent:
         error_message = "Phone number already exists for another parent."
         parents = db.collection('parents').get()
         return render_template('parents.html', parents=parents, error=error_message)
 
-
     try:
-        parent_ref, parent_id = db.collection('parents').add({
+        # add parent and student information in Firestore db
+        parent_id = db.collection('parents').add({
             'name': name,
             'phone_number': phone_number,
             'address' : address,
@@ -49,14 +49,14 @@ def add_parent():
         for student_data in students:
             db.collection('students').add(student_data)
 
-        # Create a user account in Firebase Authentication
+        # Create a user in firebase (auth service)
         user = auth.create_user(
             email=phone_number + '@example.com',
             password=password
         )
         print('Successfully created new user: {0}'.format(user.uid))
 
-        # Update Firestore to store the Firebase UID of the parent user
+        # Update firestore db with the user id of the parent
         db.collection('parents').document(parent_id).update({
             'firebase_uid': user.uid
         })
@@ -80,6 +80,7 @@ def edit_parent(parent_id):
 
     return redirect('/parents')
 
+
 @parents_bp.route('/get_students_by_parent_phone/<string:parent_id>')
 def get_students_by_parent_phone(parent_id):
     parent_phone_number = db.collection('parents').document(parent_id).get().to_dict()['phone_number']
@@ -96,7 +97,7 @@ def delete_parent(parent_id):
     # Delete parent
     parent_ref.delete()
 
-    # Delete all students with the same phone number as the deleted parent
+    # Delete all students with the same phone number
     students = db.collection('students').where('parent_phone_number', '==', parent_data['phone_number']).get()
     for student in students:
         db.collection('students').document(student.id).delete()
@@ -108,12 +109,12 @@ def delete_parent(parent_id):
 @parents_bp.route('/deactivate_parent/<string:parent_id>', methods=['POST'])
 def deactivate_parent(parent_id):
     try:
-        # Update the parent document in Firestore to set the 'deactivated' field to True
+        # Update the parent in firestore db to True in deactivated
         db.collection('parents').document(parent_id).update({
             'deactivated': True
         })
     except Exception as e:
         print('Error deactivating parent:', e)
-        return redirect('/parents?error=true')  # Redirect with error parameter
+        return redirect('/parents?error=true')
 
     return redirect('/parents')
