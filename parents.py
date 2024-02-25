@@ -19,6 +19,7 @@ def add_parent():
     password = request.form['password']
     address = request.form['address']
     students = []
+    firebase_uid = "1"
 
     student_keys = [key for key in request.form.keys() if key.startswith('student_name')]
     for key in student_keys:
@@ -40,11 +41,15 @@ def add_parent():
 
     try:
         # add parent and student information in Firestore db
-        parent_id = db.collection('parents').add({
+        parent_ref = db.collection('parents').add({
             'name': name,
             'phone_number': phone_number,
             'address' : address,
+            'firebase_uid' : firebase_uid,
+            'user_type' : 'parent',
         })
+        
+        parent_id = parent_ref[1].id
 
         for student_data in students:
             db.collection('students').add(student_data)
