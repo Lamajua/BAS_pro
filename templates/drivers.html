@@ -16,7 +16,7 @@
         </div>
 
         <ul id="menu-items">
-            <li>Profile</li>
+            <li><a href="{{ url_for('buses.buses') }}">Profile</a></li>
             <li>
                 Users
                 <ul>
@@ -38,6 +38,9 @@
             <label for="phone_number">Phone Number:</label>
             <input type="text" id="phone_number" name="phone_number" pattern="[0-9]{10}"
                 placeholder="10-digit phone number" required>
+            
+            <label for="password">Driver Password:</label>
+            <input type="password" id="password" name="password" required>
 
             <label for="licExpDt">Liscence Expire Date:</label>
             <input type="date" id="licExpDt" name="licExpDt" required>
@@ -93,7 +96,7 @@
                             </div>
                         </div>
                         <form action="/delete_driver/{{ driver.id }}" method="post" style="display: inline;">
-                            <button onclick="return confirm('Are you sure?')"" type="submit">Delete</button>
+                            <button onclick="return confirm('Are you sure?')" type="submit">Delete</button>
                         </form>
                     </td>
                 </tr>

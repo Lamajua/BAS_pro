@@ -1,6 +1,5 @@
 from flask import Blueprint, jsonify, render_template, request, redirect
 from firebase_admin import firestore, auth
-import firebase_admin
 
 parents_bp = Blueprint('parents', __name__)
 db = firestore.client()
@@ -56,7 +55,7 @@ def add_parent():
 
         # Create a user in firebase (auth service)
         user = auth.create_user(
-            email=phone_number + '@example.com',
+            email=phone_number + '@bas.com',
             password=password
         )
         print('Successfully created new user: {0}'.format(user.uid))

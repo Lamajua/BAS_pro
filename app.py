@@ -12,10 +12,12 @@ firebase_admin.initialize_app(cred)
 from students import students_bp
 from parents import parents_bp
 from drivers import drivers_bp
+from buses import buses_bp
 
 app.register_blueprint(students_bp)
 app.register_blueprint(parents_bp)
 app.register_blueprint(drivers_bp)
+app.register_blueprint(buses_bp)
 
 # Define routes
 @app.route('/')

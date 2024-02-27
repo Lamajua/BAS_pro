@@ -58,6 +58,12 @@ function openUpdateModalDrivers(name, phone_number, licExpDt, bus_number, driver
     document.getElementById(`updateModal-${driver_id}`).style.display = 'block';
 }
 
+function openUpdateModalBuses(number, district, bus_id) {
+    document.getElementById(`updateNumber-${bus_id}`).value = number;
+    document.getElementById(`updateDistrict-${bus_id}`).value = district;
+    document.getElementById(`updateModal-${bus_id}`).style.display = 'block';
+}
+
 
 function closeUpdateModal(modalId) {
     document.getElementById(modalId).style.display = 'none';

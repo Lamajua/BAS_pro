@@ -1,0 +1,92 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Profile Information</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/contentStyling.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/modal.css') }}">
+</head>
+
+<body>
+    <div id="menu-container">
+        <div id="menu-logo">
+            <img src="static/images/bas.png" alt="Logo" width="150">
+        </div>
+
+        <ul id="menu-items">
+            <li><a href="{{ url_for('buses.buses') }}">Profile</a></li>
+            <li>
+                Users
+                <ul>
+                    <li><a href="{{ url_for('parents.parents') }}">Parents</a></li>
+                    <li><a href="{{ url_for('drivers.drivers') }}">Drivers</a></li>
+                </ul>
+            </li>
+            <li><a href="{{ url_for('students.students') }}">Students</a></li>
+            <li>Performance Dashboard</li>
+        </ul>
+    </div>
+
+    <div id="infoTable-container">
+        <h1>Buses Information</h1>
+        <form action="/add_bus" method="post">
+            <label for="name">Number:</label>
+            <input type="text" id="number" name="number" required>
+
+            <label for="bus_number">District:</label>
+            <input type="text" id="district" name="district" required>
+
+            <button type="submit">Add Bus</button>
+        </form>
+
+        <table>
+            <thead>
+                <tr>
+                    <th>Number</th>
+                    <th>District</th>
+                    <th>Actions</th>
+                </tr>
+            </thead>
+
+            <tbody>
+                {% for bus in buses %}
+                <tr>
+                    <td>{{ bus.to_dict().number }}</td>
+                    <td>{{ bus.to_dict().district }}</td>
+                    <td>
+                        <button
+                            onclick="openUpdateModalBuses('{{ bus.to_dict().number }}', '{{ bus.to_dict().district }}', '{{ bus.id }}')">Edit</button>
+
+
+                        <div id="updateModal-{{ bus.id }}" class="modal">
+                            <div class="modal-content">
+                                <span class="close"
+                                    onclick="closeUpdateModal('updateModal-{{ bus.id }}')">&times;</span>
+                                <form id="updateForm-{{ bus.id }}" action="/edit_bus/{{ bus.id }}" method="post">
+                                    <label for="updateNumber">Number:</label>
+                                    <input type="text" id="updateNumber-{{ bus.id }}" name="number"
+                                        value="{{ bus.to_dict().number }}" placeholder="Number">
+
+                                    <label for="updateDistrict">District:</label>
+                                    <input type="text" id="updateDistrict-{{ bus.id }}" name="district"
+                                        value="{{ bus.to_dict().district }}" placeholder="District">
+
+                                    <button type="submit">Update</button>
+                                </form>
+                            </div>
+                        </div>
+                        <form action="/delete_bus/{{ bus.id }}" method="post" style="display: inline;">
+                            <button onclick="return confirm('Are you sure you want to delete the bus?')"
+                                type="submit">Delete</button>
+                        </form>
+                    </td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+    <script src="static/js/modal.js"></script>
+</body>
+</html>
