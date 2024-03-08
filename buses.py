@@ -15,6 +15,7 @@ def buses():
 def add_bus():
     number = request.form["number"]
     district = request.form["district"]
+   
 
     buses_data = {
         "number": number,
