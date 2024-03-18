@@ -6,7 +6,7 @@ from firebase_admin import credentials
 app = Flask(__name__)
 
 # Initialize Firebase
-cred = credentials.Certificate("C:/Users/96650/Downloads/basdb-20b5b-firebase-adminsdk-rg388-b385356ff5.json")
+cred = credentials.Certificate("/Users/maramnaif/Downloads/basdb-20b5b-firebase-adminsdk-rg388-cfcfa1930f.json")
 firebase_admin.initialize_app(cred)
 
 from students import students_bp
@@ -26,5 +26,3 @@ def login_page():
 
 if __name__ == '__main__':
     app.run(debug=True)
-
-    #razan

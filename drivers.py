@@ -1,5 +1,8 @@
 from flask import Blueprint, render_template, request, redirect
 from firebase_admin import firestore, auth
+from flask import request, render_template, redirect, url_for
+
+
 
 drivers_bp = Blueprint('drivers', __name__)
 db = firestore.client()
@@ -77,3 +80,27 @@ def edit_driver(driver_id):
 def delete_driver(driver_id):
     db.collection('drivers').document(driver_id).delete()
     return redirect('/drivers')
+
+
+@drivers_bp.route('/drivers', methods=['GET', 'POST'])
+def show_drivers():
+    if request.method == 'POST':
+        # Handle search functionality if a POST request is received
+        search_query = request.form.get('search_query', '')
+
+        drivers_query = db.collection('drivers')
+
+        if search_query:
+            drivers_query = drivers_query.where('name', '>=', search_query).where('name', '<=', search_query + u'\uf8ff')
+
+        drivers = drivers_query.get()
+
+        return render_template('drivers.html', drivers=drivers, search_query=search_query)
+    else:
+        # Handle displaying all drivers when a GET request is received
+        drivers = db.collection('drivers').get()
+        return render_template('drivers.html', drivers=drivers)
+
+@drivers_bp.route('/clear_search', methods=['POST'])
+def clear_search():
+    return redirect(url_for('drivers.show_drivers'))
