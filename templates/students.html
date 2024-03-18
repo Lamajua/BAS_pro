@@ -9,35 +9,8 @@
     <link rel="stylesheet" href="{{ url_for('static', filename='css/modal.css') }}">
 </head>
 
-<form method="post" action="{{ url_for('students.students') }}">
-    <input type="text" name="search_query" placeholder="Search by name">
-    <button type="submit">Search</button>
-</form>
 
 
-<body>
-    <h1>Students</h1>
-    <ul>
-        {% for student in students %}
-        <li>{{ student.name }}</li>
-        {% endfor %}
-    </ul>
-    
-</body>
-<style>
-    .search-form {
-        float: right;
-    }
-</style>
-
-
-<div>
-   
-    <form class="search-form" method="post" action="{{ url_for('students.students') }}">
-        <input type="text" name="search_query" placeholder="Search by name">
-        <button type="submit">Search</button>
-    </form>
-</div>
 
 
 <body>
@@ -160,11 +133,15 @@
 
     <div id="infoTable-container">
         <h1>Students Information</h1>
-        <div class="search-container"> <!-- Wrap the search form in a container -->
+        <div class="search-container"> 
             <form class="search-form" method="post" action="{{ url_for('students.students') }}">
+                <form action="{{ url_for('students.clear_search') }}" method="post">
                 <input type="text" name="search_query" placeholder="Search by name">
                 <button type="submit">Search</button>
+                <button type="submit">Cancel</button>
             </form>
+           
+            
         </div>
         
         <table>
@@ -189,7 +166,7 @@
                     <td>{{ student.to_dict().bus_number }}</td>
                     <td>{{ student.to_dict().parent_phone_number }}</td>
                     <td>
-                        <!-- Edit parent pop-up window -->
+                        
                         <button
                             onclick="openUpdateModalStudents('{{ student.to_dict().name }}', '{{ student.to_dict().address }}', '{{ student.to_dict().bus_number }}', '{{ student.id }}')">Edit</button>
                         <div id="updateModal-{{ student.id }}" class="modal">

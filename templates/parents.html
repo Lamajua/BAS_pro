@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+<!--<!DOCTYPE html>
 <html lang="en">
 
 <head>
@@ -8,6 +8,8 @@
     <link rel="stylesheet" href="{{ url_for('static', filename='css/contentStyling.css') }}">
     <link rel="stylesheet" href="{{ url_for('static', filename='css/modal.css') }}">
     <style>
+
+
         .alert {
             padding: 20px;
             background-color: #f44336;
@@ -31,6 +33,24 @@
     </style>
 </head>
 
+
+
+
+<div id="infoTable-container">
+    <h1>Parents Information</h1>
+    
+    <div class="search-container">
+        <form class="search-form" method="post" action="{{ url_for('parents.show_parents') }}">
+ 
+        <form class="search-form" method="get" action="{{ url_for('parents.show_parents') }}">
+            <input type="text" name="search_query" placeholder="Search by name">
+            <button type="submit">Search</button>
+        </form>
+    </div>
+
+   
+
+
 <body>
     <div id="menu-container">
         <div id="menu-logo">
@@ -49,6 +69,9 @@
             <li><a href="{{ url_for('students.students') }}">Students</a></li>
             <li>Performance Dashboard</li>
         </ul>
+
+
+       
     </div>
     <div id="infoTable-container">
         <h1>Parents Information</h1>
@@ -68,7 +91,7 @@
             <input type="address" id="address" name="address" required>
 
             <div id="students">
-                <!-- Add students -->
+              
                 <div id="student1">
                     <label for="student_name_1">Student Name:</label>
                     <input type="text" id="student_name_1" name="student_name_1" required>
@@ -89,6 +112,10 @@
             <button type="submit">Add Parent and Students</button>
 
         </form>
+
+        
+
+
         <table>
             <thead>
             
@@ -118,7 +145,7 @@
                             <div class="modal-content">
                                 <span class="close" onclick="closeUpdateModal('updateModal-{{ parent.id }}')">&times;</span>
                                 <form id="updateForm-{{ parent.id }}" action="/edit_parent/{{ parent.id }}" method="post">
-                                    <!-- Ensure that each input field has a name attribute -->
+                                    
                                     <label for="updateName">Name:</label>
                                     <input type="text" id="updateName-{{ parent.id }}" name="name" value="{{ parent.to_dict().name }}" placeholder="Name">
                     
@@ -175,6 +202,179 @@
         studentDiv.remove();
     }
     </script>
-</body>
+</body>-->
 
-</html>
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Parents Information</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/contentStyling.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/modal.css') }}">
+    <style>
+        .alert {
+            padding: 20px;
+            background-color: #f44336;
+            color: white;
+        }
+
+        .closebtn {
+            margin-left: 15px;
+            color: white;
+            font-weight: bold;
+            float: right;
+            font-size: 22px;
+            line-height: 20px;
+            cursor: pointer;
+            transition: 0.3s;
+        }
+
+        .closebtn:hover {
+            color: black;
+        }
+    </style>
+</head>
+
+<body>
+    <div id="menu-container">
+        <div id="menu-logo">
+            <img src="static/images/bas.png" alt="Logo" width="150">
+        </div>
+
+        <ul id="menu-items">
+            <li><a href="{{ url_for('buses.buses') }}">Buses</a></li>
+            <li>
+                Users
+                <ul>
+                    <li><a href="{{ url_for('parents.parents') }}">Parents</a></li>
+                    <li><a href="{{ url_for('drivers.drivers') }}">Drivers</a></li>
+                </ul>
+            </li>
+            <li><a href="{{ url_for('students.students') }}">Students</a></li>
+            <li>Performance Dashboard</li>
+        </ul>
+    </div>
+
+    <div id="infoTable-container">
+        <h1>Parents Information</h1>
+        <h3>Add Parent:</h3>
+        <form action="/add_parent" method="post">
+            <label for="name">Parent Name:</label>
+            <input type="text" id="name" name="name" required>
+
+            <label for="phone_number">Parent Phone Number:</label>
+            <input type="text" id="phone_number" name="phone_number" pattern="[0-9]{10}"
+                placeholder="10-digit phone number" required>
+
+            <label for="password">Parent Password:</label>
+            <input type="password" id="password" name="password" required>
+
+            <label for="address">Address:</label>
+            <input type="address" id="address" name="address" required>
+
+            <div id="students">
+                <!-- Add students -->
+                <div id="student1">
+                    <label for="student_name_1">Student Name:</label>
+                    <input type="text" id="student_name_1" name="student_name_1" required>
+
+                    <label for="bus_number_1">Bus Number:</label>
+                    <input type="text" id="bus_number_1" name="bus_number_1" required>
+                </div>
+            </div>
+
+            {% if error %}
+            <div class="alert">
+                <span class="closebtn" onclick="this.parentElement.style.display='none';">&times;</span>
+                {{ error }}
+            </div>
+            {% endif %}
+
+            <button type="button" onclick="addStudentField()">Add Student</button>
+            <button type="submit">Add Parent and Students</button>
+        </form>
+
+        <div class="search-container">
+            <form class="search-form" method="post" action="{{ url_for('parents.show_parents') }}">
+                <form action="{{ url_for('parents.clear_search') }}" method="post">
+                <input type="text" name="search_query" placeholder="Search by name">
+                <button type="submit">Search</button>
+                <button type="submit">Cancel</button>
+            
+        </div>
+
+        <table>
+            <thead>
+                <tr>
+                    <th>Name</th>
+                    <th>Phone Number</th>
+                    <th>Children</th>
+                    <th>Activated</th>
+                    <th>Actions</th>
+                </tr>
+            <tbody>
+                {% for parent in parents %}
+                <tr>
+                    <td>{{ parent.to_dict().name }}</td>
+                    <td>{{ parent.to_dict().phone_number }}</td>
+                    <td>{% for student in students %}
+                        {% if student.to_dict().parent_phone_number == parent.to_dict().phone_number %}
+                        {{ student.to_dict().name }},
+                        {% endif %}
+                        {% endfor %}
+                    </td>
+                    <td>{{ "False" if parent.to_dict().deactivated else "True"}}</td>
+                    <td>
+                        <button onclick="openUpdateModalParents('{{ parent.to_dict().name }}', '{{ parent.to_dict().address }}' ,'{{ parent.id }}')">Edit</button>
+
+                        <div id="updateModal-{{ parent.id }}" class="modal">
+                            <div class="modal-content">
+                                <span class="close" onclick="closeUpdateModal('updateModal-{{ parent.id }}')">&times;</span>
+                                <form id="updateForm-{{ parent.id }}" action="/edit_parent/{{ parent.id }}" method="post">
+                                    <!-- Ensure that each input field has a name attribute -->
+                                    <label for="updateName">Name:</label>
+                                    <input type="text" id="updateName-{{ parent.id }}" name="name" value="{{ parent.to_dict().name }}" placeholder="Name">
+
+                                    <label for="updateAddress">Address:</label>
+                                    <input type="text" id="updateAddress-{{ parent.id }}" name="address" value="{{ parent.to_dict().address }}" placeholder="Address">
+
+                                    <ul id="studentList-{{ parent.id }}"></ul>
+
+                                    <button type="submit">Update</button>
+                                </form>
+                            </div>
+                        </div>
+                        <form action="/delete_parent/{{ parent.id }}" method="post" style="display: inline;">
+                            <button onclick="return confirm('Are you sure you want to delete this parent?')" type="submit">Delete</button>
+                        </form>
+
+                        <form action="/deactivate_parent/{{ parent.id }}" method="post" style="display: inline;">
+                            <button onclick="return confirm('Are you sure you want to deactivate this parent?')" type="submit">Deactivate</button>
+                        </form>
+                    </td>
+                </tr>
+                {% endfor %}
+            </tbody>
+            </thead>
+        </table>
+    </div>
+    <script src="static/js/modal.js"></script>
+    <script>
+        let studentCount = 1;
+
+        function addStudentField() {
+            studentCount++;
+
+            const studentsDiv = document.getElementById("students");
+
+            const studentFields = `
+            <div id="student${studentCount}">
+                <label for="student_name_${studentCount}">Student Name:</label>
+                <input type="text" id="student_name_${studentCount}" name="student_name_${studentCount}" required>
+
+                <label for="bus_number_${studentCount}">Bus Number:</label>
+                <input type="text" id="bus
+
+

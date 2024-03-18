@@ -1,8 +1,15 @@
 from flask import Blueprint, jsonify, render_template, request, redirect
 from firebase_admin import firestore, auth
+from flask import request, render_template, redirect, url_for
+from flask import request
 
 parents_bp = Blueprint('parents', __name__)
 db = firestore.client()
+
+
+
+
+
 
 @parents_bp.route('/parents')
 def parents():
@@ -122,3 +129,56 @@ def deactivate_parent(parent_id):
         return redirect('/parents?error=true')
 
     return redirect('/parents')
+
+
+
+
+# search bar
+    
+'''@parents_bp.route('/parents', methods=['GET', 'POST'])
+def show_parents():
+    if request.method == 'POST':
+        # Handle search functionality if a POST request is received
+        search_query = request.form.get('search_query', '')
+
+        parents_query = db.collection('parents')
+
+        if search_query:
+            parents_query = parents_query.where('name', '>=', search_query).where('name', '<=', search_query + u'\uf8ff')
+
+        parents = parents_query.get()
+
+        return render_template('parents.html', parents=parents, search_query=search_query)
+    else:
+        # Handle displaying all parents when a GET request is received
+        parents = db.collection('parents').get()
+        return render_template('parents.html', parents=parents)'''
+        
+      
+
+@parents_bp.route('/parents', methods=['GET', 'POST'])
+def show_parents():
+    if request.method == 'POST':
+        # Handle search functionality if a POST request is received
+        search_query = request.form.get('search_query', '')
+
+        parents_query = db.collection('parents')
+
+        if search_query:
+            parents_query = parents_query.where('name', '>=', search_query).where('name', '<=', search_query + u'\uf8ff')
+
+        parents = parents_query.get()
+
+        return render_template('parents.html', parents=parents, search_query=search_query)
+    else:
+        # Handle displaying all parents when a GET request is received
+        parents = db.collection('parents').get()
+        return render_template('parents.html', parents=parents)
+
+@parents_bp.route('/clear_search', methods=['POST'])
+def clear_search():
+    return redirect(url_for('parents.show_parents'))
+
+
+
+
