@@ -2,23 +2,9 @@ from flask import Blueprint, render_template, request, redirect
 from firebase_admin import firestore
 from flask import request, render_template, redirect, url_for
 
+
 students_bp = Blueprint('students', __name__)
 db = firestore.client()
-
-
-# search bar
-
-'''@students_bp.route('/students', methods=['GET', 'POST'])
-def show_students():
-    if request.method == 'POST':
-        search_query = request.form['search_query']
-        students = db.collection('students').where('name', '==', search_query).get()
-    else:
-        students = db.collection('students').get()
-        
-    parents = db.collection('parents').get()
-    return render_template('students.html', students=students, parents=parents)'''
-    
  
 @students_bp.route('/students', methods=['GET', 'POST'])
 def show_students():
@@ -33,6 +19,7 @@ def show_students():
         
     parents = db.collection('parents').get()
     return render_template('students.html', students=students, parents=parents)
+
 
 @students_bp.route('/clear_search', methods=['POST'])
 def clear_search():

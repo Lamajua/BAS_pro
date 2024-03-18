@@ -1,4 +1,3 @@
-
 /* This is the dashboard (Students information) page styling file */
 
 h2{
@@ -103,13 +102,6 @@ button {
 }
 
 
-
-
-
-
-
-
-
 #logout-button {
     position: absolute;
     bottom: 20px;
@@ -124,7 +116,4 @@ button {
     border-radius: 10px;
     padding: 5px; /* Increase the padding */
 }
-
-
-
 
