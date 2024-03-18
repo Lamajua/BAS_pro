@@ -9,7 +9,7 @@ from firebase_admin import credentials
 app = Flask(__name__)
 
 # Initialize Firebase
-cred = credentials.Certificate("/Users/maramnaif/Downloads/basdb-20b5b-firebase-adminsdk-rg388-cfcfa1930f.json")
+cred = credentials.Certificate("C:/Users/lmaal/Downloads/basdb-20b5b-firebase-adminsdk-rg388-367ca2f721.json")
 firebase_admin.initialize_app(cred)
 
 from students import students_bp

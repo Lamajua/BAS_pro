@@ -30,7 +30,9 @@ def add_parent():
         students.append({
             'name': student_name,
             'bus_number': bus_number,
-            'parent_phone_number': phone_number
+            'parent_phone_number': phone_number,
+            'status_pickup': 'present',
+            'status_dropoff': 'present'
         })
 
     # Check if the parent already exist by checking the phone number
