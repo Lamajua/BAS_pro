@@ -109,7 +109,6 @@ def delete_parent(parent_id):
     return redirect('/parents')
 
 
-
 @parents_bp.route('/deactivate_parent/<string:parent_id>', methods=['POST'])
 def deactivate_parent(parent_id):
     try:
