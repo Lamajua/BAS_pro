@@ -1,6 +1,9 @@
-from flask import Flask, render_template
+from flask import Flask, render_template, request, redirect, url_for
 import firebase_admin
 from firebase_admin import credentials
+
+
+
 
 # Initialize Flask app
 app = Flask(__name__)
@@ -24,5 +27,7 @@ app.register_blueprint(buses_bp)
 def login_page():
     return render_template('login.html')
 
+    
 if __name__ == '__main__':
     app.run(debug=True)
+

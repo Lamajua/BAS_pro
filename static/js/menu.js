@@ -1,3 +1,4 @@
+
 document.addEventListener('DOMContentLoaded', function() {
     // Get the current path or URL of the page
     var currentPath = window.location.pathname;
@@ -27,4 +28,3 @@ document.addEventListener('DOMContentLoaded', function() {
         event.stopPropagation(); // Prevent the event from bubbling up to the parent
     });
 });
-

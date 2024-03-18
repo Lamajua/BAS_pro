@@ -2,10 +2,8 @@ from flask import Blueprint, jsonify, render_template, request, redirect
 from firebase_admin import firestore, auth
 from flask import request, render_template, redirect, url_for
 
-
 parents_bp = Blueprint('parents', __name__)
 db = firestore.client()
-
 
 @parents_bp.route('/parents')
 def parents():
@@ -131,6 +129,7 @@ def deactivate_parent(parent_id):
 
     return redirect('/parents')
 
+
     # Search bar
 @parents_bp.route('/parents', methods=['GET', 'POST'])
 def show_parents():
@@ -144,6 +143,7 @@ def show_parents():
             parents_query = parents_query.where('name', '>=', search_query).where(
                 'name', '<=', search_query + u'\uf8ff')
 
+
         parents = parents_query.get()
 
         return render_template('parents.html', parents=parents, search_query=search_query)
@@ -156,3 +156,4 @@ def show_parents():
 @parents_bp.route('/clear_search', methods=['POST'])
 def clear_search():
     return redirect(url_for('parents.show_parents'))
+

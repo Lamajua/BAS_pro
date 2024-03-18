@@ -1,11 +1,19 @@
-from flask import Blueprint, render_template, request, redirect
 from firebase_admin import firestore, auth
+
 from flask import request, render_template, redirect, url_for
+from flask import Blueprint, render_template, request, redirect
+from flask import request, render_template, redirect, url_for
+from flask import request
+
+
 
 
 
 drivers_bp = Blueprint('drivers', __name__)
 db = firestore.client()
+
+
+
 
 @drivers_bp.route('/drivers')
 def drivers():
@@ -80,7 +88,7 @@ def edit_driver(driver_id):
 def delete_driver(driver_id):
     db.collection('drivers').document(driver_id).delete()
     return redirect('/drivers')
-
+  
 
 @drivers_bp.route('/drivers', methods=['GET', 'POST'])
 def show_drivers():
@@ -104,3 +112,4 @@ def show_drivers():
 @drivers_bp.route('/clear_search', methods=['POST'])
 def clear_search():
     return redirect(url_for('drivers.show_drivers'))
+

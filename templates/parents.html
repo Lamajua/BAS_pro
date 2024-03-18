@@ -95,10 +95,10 @@
 
             <button type="button" onclick="addStudentField()">Add Student</button>
             <button type="submit">Add Parent and Students</button>
-
         </form>
         
         <!--Search bar-->
+
         <div class="search-container">
             <form class="search-form" method="post" action="{{ url_for('parents.show_parents') }}">
                 <form action="{{ url_for('parents.clear_search') }}" method="post">
@@ -107,10 +107,9 @@
                 <button type="submit">Cancel</button>
             
         </div>
-        
+
         <table>
             <thead>
-            
                 <tr>
                     <th>Name</th>
                     <th>Phone Number</th>
@@ -132,7 +131,7 @@
                     <td>{{ "False" if parent.to_dict().deactivated else "True"}}</td>
                     <td>
                         <button onclick="openUpdateModalParents('{{ parent.to_dict().name }}', '{{ parent.to_dict().address }}' ,'{{ parent.id }}')">Edit</button>
-                    
+
                         <div id="updateModal-{{ parent.id }}" class="modal">
                             <div class="modal-content">
                                 <span class="close" onclick="closeUpdateModal('updateModal-{{ parent.id }}')">&times;</span>
@@ -140,12 +139,12 @@
                                     <!-- Ensure that each input field has a name attribute -->
                                     <label for="updateName">Name:</label>
                                     <input type="text" id="updateName-{{ parent.id }}" name="name" value="{{ parent.to_dict().name }}" placeholder="Name">
-                    
+
                                     <label for="updateAddress">Address:</label>
                                     <input type="text" id="updateAddress-{{ parent.id }}" name="address" value="{{ parent.to_dict().address }}" placeholder="Address">
-                    
+
                                     <ul id="studentList-{{ parent.id }}"></ul>
-                    
+
                                     <button type="submit">Update</button>
                                 </form>
                             </div>
@@ -163,37 +162,21 @@
             </tbody>
             </thead>
         </table>
-
     </div>
     <script src="static/js/modal.js"></script>
     <script>
-    let studentCount = 1;
+        let studentCount = 1;
 
-    function addStudentField() {
-        studentCount++;
+        function addStudentField() {
+            studentCount++;
 
-        const studentsDiv = document.getElementById("students");
+            const studentsDiv = document.getElementById("students");
 
-        const studentFields = `
+            const studentFields = `
             <div id="student${studentCount}">
                 <label for="student_name_${studentCount}">Student Name:</label>
                 <input type="text" id="student_name_${studentCount}" name="student_name_${studentCount}" required>
 
                 <label for="bus_number_${studentCount}">Bus Number:</label>
-                <input type="text" id="bus_number_${studentCount}" name="bus_number_${studentCount}" required>
+                <input type="text" id="bus
 
-                <button type="button" onclick="removeStudentField(${studentCount})">Remove Student</button>
-            </div>
-        `;
-
-        studentsDiv.insertAdjacentHTML("beforeend", studentFields);
-    }
-
-    function removeStudentField(studentId) {
-        const studentDiv = document.getElementById(`student${studentId}`);
-        studentDiv.remove();
-    }
-    </script>
-</body>
-
-</html>

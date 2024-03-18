@@ -5,7 +5,7 @@ from flask import request, render_template, redirect, url_for
 
 students_bp = Blueprint('students', __name__)
 db = firestore.client()
-
+ 
 @students_bp.route('/students', methods=['GET', 'POST'])
 def show_students():
     if request.method == 'POST':
@@ -20,11 +20,12 @@ def show_students():
     parents = db.collection('parents').get()
     return render_template('students.html', students=students, parents=parents)
 
+
 @students_bp.route('/clear_search', methods=['POST'])
 def clear_search():
     return redirect(url_for('students.show_students'))
 
-
+    
 
 @students_bp.route('/students')
 def students():
