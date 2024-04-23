@@ -69,4 +69,16 @@ function closeUpdateModal(modalId) {
     document.getElementById(modalId).style.display = 'none';
 }
 
-//TAKFA
+
+//---------Edit Profile Modal----------
+function openProfileModal() {
+    var modal = document.getElementById('profile-modal');
+    modal.style.display = 'block';
+}
+
+function closeProfileModal() {
+    var modal = document.getElementById('profile-modal');
+    modal.style.display = 'none';
+}
+
+

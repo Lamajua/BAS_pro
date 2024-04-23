@@ -28,3 +28,55 @@ document.addEventListener('DOMContentLoaded', function() {
         event.stopPropagation(); // Prevent the event from bubbling up to the parent
     });
 });
+
+
+
+
+//-------------------- Saving & Retrieving Users' Profile Info -------------------
+// Retrieve saved profile information from local storage
+document.addEventListener('DOMContentLoaded', function() {
+    var profileInfo = localStorage.getItem('profileInfo');
+    if (profileInfo) {
+        var parsedProfileInfo = JSON.parse(profileInfo);
+        displayProfileInfo(parsedProfileInfo.name, parsedProfileInfo.role);
+    }
+});
+
+// Function to display profile information in the menu
+function displayProfileInfo(name, role) {
+    var profileInfoElement = document.getElementById('profile-info');
+    profileInfoElement.innerHTML = name + "<br><span style='font-size: smaller;'>" + role + "</span>";
+}
+
+// Function to save profile information to local storage
+function saveProfileInfo(name, role) {
+    var profileInfo = { name: name, role: role };
+    localStorage.setItem('profileInfo', JSON.stringify(profileInfo));
+}
+
+// Function to open the profile modal
+function openProfileModal() {
+    var modal = document.getElementById('profile-modal');
+    modal.style.display = 'block';
+}
+
+// Function to close the profile modal
+function closeProfileModal() {
+    var modal = document.getElementById('profile-modal');
+    modal.style.display = 'none';
+}
+
+// Function to handle saving profile information
+function saveProfile() {
+    var name = document.getElementById('name').value;
+    var role = document.getElementById('role').value;
+
+    // Save profile information to local storage
+    saveProfileInfo(name, role);
+
+    // Update profile information in the menu
+    displayProfileInfo(name, role);
+
+    // Close the profile modal
+    closeProfileModal();
+}
