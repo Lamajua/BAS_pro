@@ -32,6 +32,46 @@ document.addEventListener('DOMContentLoaded', function() {
 
 
 
+// -----------------------  Saving Profile Info To Firestore -----------------
+// Function to save profile information to Firestore
+function saveProfileInfoFirestore(name, role, schoolName, schoolAddress) {
+    var user = firebase.auth().currentUser;
+    var db = firebase.firestore();
+    db.collection("school_managers").doc(user.uid).set({
+        name: name,
+        role: role,
+        school_name: schoolName,
+        school_address: schoolAddress
+    })
+    .then(() => {
+        console.log("Profile information saved to Firestore");
+    })
+    .catch((error) => {
+        console.error("Error saving profile information to Firestore: ", error);
+    });
+}
+
+// Function to handle saving profile information
+function saveProfile() {
+    var name = document.getElementById('name').value;
+    var role = document.getElementById('role').value;
+    var schoolName = document.getElementById('schoolName').value;
+    var schoolAddress = document.getElementById('schoolAddress').value;
+
+    // Save profile information to Firestore
+    saveProfileInfoFirestore(name, role, schoolName, schoolAddress);
+
+    // Update profile information in the menu
+    displayProfileInfo(name, role);
+
+    // Close the profile modal
+    closeProfileModal();
+}
+
+
+
+
+
 //-------------------- Saving & Retrieving Users' Profile Info -------------------
 // Retrieve saved profile information from local storage
 document.addEventListener('DOMContentLoaded', function() {
