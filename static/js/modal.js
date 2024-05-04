@@ -1,4 +1,3 @@
-
 function openUpdateModalStudents(name, address, bus_number, student_id) {
 
     document.getElementById(`updateName-${student_id}`).value = name;
@@ -8,16 +7,12 @@ function openUpdateModalStudents(name, address, bus_number, student_id) {
     document.getElementById(`updateModal-${student_id}`).style.display = 'block';
 }
 
-// function openUpdateModalParents(name, address, parent_id) {
 
-//     document.getElementById(`updateName-${parent_id}`).value = name;
-//     document.getElementById(`updateAddress-${parent_id}`).value = address;
-//     document.getElementById(`updateModal-${parent_id}`).style.display = 'block';
-// }
-
-function openUpdateModalParents(name, address, parent_id) {
+function openUpdateModalParents(name, address,parent_id, latitude, longitude ) {
     document.getElementById(`updateName-${parent_id}`).value = name;
     document.getElementById(`updateAddress-${parent_id}`).value = address;
+    document.getElementById(`updateLatitude-${parent_id}`).value = latitude;
+    document.getElementById(`updateLongitude-${parent_id}`).value = longitude;
 
     // Fetch the students for the parent
     fetch(`/get_students_by_parent_phone/${parent_id}`)
@@ -70,3 +65,15 @@ function closeUpdateModal(modalId) {
 }
 
 //TAKFA
+
+
+//---------Edit Profile Modal----------
+function openProfileModal() {
+    var modal = document.getElementById('profile-modal');
+    modal.style.display = 'block';
+}
+
+function closeProfileModal() {
+    var modal = document.getElementById('profile-modal');
+    modal.style.display = 'none';
+}

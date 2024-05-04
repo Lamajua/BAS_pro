@@ -1,18 +1,12 @@
 from firebase_admin import firestore, auth
-
 from flask import request, render_template, redirect, url_for
 from flask import Blueprint, render_template, request, redirect
 from flask import request, render_template, redirect, url_for
 from flask import request
 
 
-
-
-
 drivers_bp = Blueprint('drivers', __name__)
 db = firestore.client()
-
-
 
 
 @drivers_bp.route('/drivers')
@@ -99,7 +93,7 @@ def show_drivers():
         drivers_query = db.collection('drivers')
 
         if search_query:
-            drivers_query = drivers_query.where('name', '>=', search_query).where('name', '<=', search_query + u'\uf8ff')
+            drivers_query = drivers_query.where('phone_number', '>=', search_query).where('phone_number', '<=', search_query + u'\uf8ff')
 
         drivers = drivers_query.get()
 

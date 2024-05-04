@@ -38,28 +38,10 @@
 </head>
 
 <body>
-    <div id="menu-container">
-        <div id="menu-logo">
-            <img src="static/images/bas.png" alt="Logo" width="150">
-        </div>
+    
 
-        <ul id="menu-items">
-            <li><a href="{{ url_for('buses.buses') }}">Buses</a></li>
-            <li class="expandable">
-                <i class="fas fa-users"></i>Users <span class="arrow">&#x25BE;</span>
-                <ul class="submenu">
-                    <li><a href="{{ url_for('parents.parents') }}"><i class="fa-solid fa-user-group"></i>Parents</a>
-                    </li>
-                    <li><a href="{{ url_for('drivers.drivers') }}"><i class="fa-solid fa-id-card"></i>Drivers</a></li>
-                </ul>
-            </li>
-            <li><a href="{{ url_for('students.students') }}"><i class="fa-solid fa-children"></i>Students</a></li>
-            <li style="white-space: nowrap;"><i class="fa-solid fa-chart-line"></i>Performance Dashboard</li>
-            <li id="logout-button"><a href="{{ url_for('login_page') }}"><i class="fas fa-sign-out-alt"></i>Logout</a>
-            </li>
-
-        </ul>
-    </div>
+     <!-- Include menu -->
+     {% include 'menu.html' %}
 
     <div id="infoTable-container">
         <h1>Students Information</h1>
@@ -67,7 +49,8 @@
         <div class="search-container">
             <form class="search-form" method="post" action="{{ url_for('students.students') }}">
                 <form action="{{ url_for('students.clear_search') }}" method="post">
-                    <input type="text" name="search_query" placeholder="Search by name">
+                    <!-- driver.html, parent.html, student.html -->
+                    <input type="text" name="search_query" placeholder="Search by phone number">
                     <button type="submit">Search</button>
                     <button type="submit">Cancel</button>
                 </form>
@@ -80,7 +63,6 @@
                     <th>Address</th>
                     <th>Bus No.</th>
                     <th>Parent Phone Number</th>
-                    <th>Actions</th>
                 </tr>
             </thead>
             <tbody>
@@ -93,37 +75,7 @@
                         {% endif %}
                         {% endfor %}</td>
                     <td>{{ student.to_dict().bus_number }}</td>
-                    <td>{{ student.to_dict().parent_phone_number }}</td>
-                    <td>
-
-                        <button
-                            onclick="openUpdateModalStudents('{{ student.to_dict().name }}', '{{ student.to_dict().address }}', '{{ student.to_dict().bus_number }}', '{{ student.id }}')">Edit</button>
-                        <div id="updateModal-{{ student.id }}" class="modal">
-                            <div class="modal-content">
-                                <span class="close"
-                                    onclick="closeUpdateModal('updateModal-{{ student.id }}')">&times;</span>
-                                <form id="updateForm-{{ student.id }}" action="/edit_student/{{ student.id }}"
-                                    method="post">
-                                    <label for="updateName">Name:</label>
-                                    <input type="text" id="updateName-{{ student.id }}" name="name"
-                                        value="{{ student.to_dict().name }}" placeholder="Name">
-
-                                    <label for="updateAddress">Address:</label>
-                                    <input type="text" id="updateAddress-{{ student.id }}" name="address"
-                                        value="{{ student.to_dict().address }}" placeholder="Address">
-
-                                    <label for="updateBusNo">Bus Number:</label>
-                                    <input type="text" id="updateBusNo-{{ student.id }}" name="bus_number"
-                                        value="{{ student.to_dict().bus_number }}" placeholder="Bus Number">
-
-                                    <button type="submit">Update</button>
-                                </form>
-                            </div>
-                        </div>
-                        <form action="/delete_student/{{ student.id }}" method="post" style="display: inline;">
-                            <button onclick="return confirm('Are you sure?')" type="submit">Delete</button>
-                        </form>
-                    </td>
+                    <td>{{ student.to_dict().parent_phone_number }}</td>               
                 </tr>
                 {% endfor %}
             </tbody>

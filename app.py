@@ -9,7 +9,7 @@ from firebase_admin import credentials
 app = Flask(__name__)
 
 # Initialize Firebase
-cred = credentials.Certificate("C:/Users/lmaal/Downloads/basdb-20b5b-firebase-adminsdk-rg388-367ca2f721.json")
+cred = credentials.Certificate("C:/Users/96650/Downloads/basdb-20b5b-firebase-adminsdk-rg388-b385356ff5.json")
 firebase_admin.initialize_app(cred)
 
 from students import students_bp
@@ -17,15 +17,18 @@ from parents import parents_bp
 from drivers import drivers_bp
 from buses import buses_bp
 
+
 app.register_blueprint(students_bp)
 app.register_blueprint(parents_bp)
 app.register_blueprint(drivers_bp)
 app.register_blueprint(buses_bp)
 
-# Define routes
+
+# Define routess
 @app.route('/')
 def login_page():
     return render_template('login.html')
+
 
     
 if __name__ == '__main__':

@@ -37,37 +37,18 @@
 </head>
 
 <body>
-    <div id="menu-container">
-        <div id="menu-logo">
-            <img src="static/images/bas.png" alt="Logo" width="150">
-        </div>
 
-        <ul id="menu-items">
-            <li><a href="{{ url_for('buses.buses') }}">Buses</a></li>
-            <li class="expandable">
-                <i class="fas fa-users"></i>Users <span class="arrow">&#x25BE;</span>
-                <ul class="submenu">
-                    <li><a href="{{ url_for('parents.parents') }}"><i class="fa-solid fa-user-group"></i>Parents</a></li>
-                    <li><a href="{{ url_for('drivers.drivers') }}"><i class="fa-solid fa-id-card"></i>Drivers</a></li>
-                </ul>
-            </li>
-            <li><a href="{{ url_for('students.students') }}"><i class="fa-solid fa-children"></i>Students</a></li>
-            <li style="white-space: nowrap;"><i class="fa-solid fa-chart-line"></i>Performance Dashboard</li>
-            <li id="logout-button"><a href="{{ url_for('login_page') }}"><i class="fas fa-sign-out-alt"></i>Logout</a></li>
+     <!-- Include menu -->
+     {% include 'menu.html' %}
 
-        </ul>
-
-    </div>
-
+    
     <div id="infoTable-container">
         <h1>Buses Information</h1>
         <form action="/add_bus" method="post">
             <label for="name">Number:</label>
             <input type="text" id="number" name="number" required>
-
             <label for="bus_number">District:</label>
             <input type="text" id="district" name="district" required>
-
             <button type="submit">Add Bus</button>
         </form>
 
@@ -79,7 +60,6 @@
                     <th>Actions</th>
                 </tr>
             </thead>
-
             <tbody>
                 {% for bus in buses %}
                 <tr>
@@ -88,8 +68,6 @@
                     <td>
                         <button
                             onclick="openUpdateModalBuses('{{ bus.to_dict().number }}', '{{ bus.to_dict().district }}', '{{ bus.id }}')">Edit</button>
-
-
                         <div id="updateModal-{{ bus.id }}" class="modal">
                             <div class="modal-content">
                                 <span class="close"
@@ -98,11 +76,9 @@
                                     <label for="updateNumber">Number:</label>
                                     <input type="text" id="updateNumber-{{ bus.id }}" name="number"
                                         value="{{ bus.to_dict().number }}" placeholder="Number">
-
                                     <label for="updateDistrict">District:</label>
                                     <input type="text" id="updateDistrict-{{ bus.id }}" name="district"
                                         value="{{ bus.to_dict().district }}" placeholder="District">
-
                                     <button type="submit">Update</button>
                                 </form>
                             </div>
@@ -117,6 +93,5 @@
             </tbody>
         </table>
     </div>
-
 </body>
 </html>
