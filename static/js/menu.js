@@ -119,6 +119,3 @@ function saveProfile() {
     // Close the profile modal
     closeProfileModal();
 }
-
-
-
