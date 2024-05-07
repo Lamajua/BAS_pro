@@ -19,8 +19,8 @@ def add_parent():
     phone_number = request.form['phone_number']
     password = request.form['password']
     address = request.form['address']
-    latitude = float(request.form['latitude'])
-    longitude = float(request.form['longitude'])
+    #latitude = float(request.form['latitude'])
+    #longitude = float(request.form['longitude'])
     students = []
     firebase_uid = "1"
 
@@ -35,10 +35,18 @@ def add_parent():
             'parent_phone_number': phone_number,
             'status_pickup': 'present',
             'status_dropoff': 'present',
-            'latitude': latitude,
-            'longitude': longitude
+            #'latitude': latitude,
+            #'longitude': longitude
         })
 
+    # Check if the bus number and district exist in the buses table
+    bus_query = db.collection('buses').where('number', '==', bus_number).where('district', '==', address).get()
+    if not bus_query:
+        error_message = "The provided Bus number and Address do not match any existing record."
+        parents = db.collection('parents').get()
+        return render_template('parents.html', parents=parents, error=error_message)
+
+    # Check if the parent's phone number already exists
     existing_parent = db.collection('parents').where('phone_number', '==', phone_number).get()
     if existing_parent:
         error_message = "Phone number already exists for another parent."
@@ -50,11 +58,12 @@ def add_parent():
             'name': name,
             'phone_number': phone_number,
             'address': address,
-            'latitude': latitude,
-            'longitude': longitude,
+           # 'latitude': latitude,
+           # 'longitude': longitude,
             'firebase_uid': firebase_uid,
             'user_type': 'parent',
         })
+
 
         parent_id = parent_ref[1].id
 
@@ -82,15 +91,15 @@ def add_parent():
 def edit_parent(parent_id):
     name = request.form['name']
     address = request.form['address']
-    latitude = request.form['latitude']
-    longitude = request.form['longitude']
+    #latitude = request.form['latitude']
+    #longitude = request.form['longitude']
 
     # Update parent information
     db.collection('parents').document(parent_id).update({
         'name': name,
         'address': address,
-        'latitude': latitude,
-        'longitude': longitude,
+        #'latitude': latitude,
+        #'longitude': longitude,
     })
 
     # Update child (student) information

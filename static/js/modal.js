@@ -8,11 +8,9 @@ function openUpdateModalStudents(name, address, bus_number, student_id) {
 }
 
 
-function openUpdateModalParents(name, address,parent_id, latitude, longitude ) {
+function openUpdateModalParents(name, address,parent_id ) {
     document.getElementById(`updateName-${parent_id}`).value = name;
     document.getElementById(`updateAddress-${parent_id}`).value = address;
-    document.getElementById(`updateLatitude-${parent_id}`).value = latitude;
-    document.getElementById(`updateLongitude-${parent_id}`).value = longitude;
 
     // Fetch the students for the parent
     fetch(`/get_students_by_parent_phone/${parent_id}`)
